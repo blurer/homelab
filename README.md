@@ -55,4 +55,85 @@ Git-controlled code delivery process with infrastructure and application definit
 - GitOps Workflow: Git repository holds all configuration, cluster pulls changes, and GitOps controller matches Git state with cluster state.
 - Benefits of GitOps: Provides version control, enables collaboration, improves security, and facilitates automation.
 
-## Flux 
+# Flux
+## Installing Flux
+- Flux needs to be installed on the cluster to facilitate the GitOps reconciliation loop
+- Prerequisites: Kubernetes cluster and GitHub personal access token
+### Creating a GitHub Personal Access Token
+- Go to GitHub Settings > Developer Settings > Personal Access Tokens
+- Generate a new classic token with 'repo' permissions
+- Store the token in an environment variable: `export GITHUB_TOKEN=<your-token>`
+- Also export your GitHub username: `export GITHUB_USER=<your-username>`
+### Installing Flux CLI
+- Various installation methods available (e.g., Homebrew, curl)
+- Verify installation with `which flux`
+### Checking Cluster Compatibility
+- Run `flux check --pre` to ensure the cluster meets Flux requirements
+
+After it passes:
+
+```bash
+# bryanlurer @ m4-mbp in ~/devops [7:39:05] 
+$ flux check --pre
+► checking prerequisites
+✔ Kubernetes 1.31.4+k3s1 >=1.28.0-0
+✔ prerequisites checks passed
+```
+
+### Bootstrapping Flux on the Cluster
+
+- Use the command:
+```bash
+flux bootstrap github \
+--owner=$GITHUB_USER \
+--repository=homelab \
+--branch=main \
+--path=./clusters/staging \
+--personal
+```
+
+Expected output:
+
+```
+# bryanlurer @ m4-mbp in ~/dev/homelab on git:main o [7:47:18] C:1
+$ flux bootstrap github \
+--owner=$GITHUB_USER \
+--repository=homelab \
+--branch=main \
+--path=./clusters/staging \
+--personal
+► connecting to github.com
+► cloning branch "main" from Git repository "https://github.com/blurer/homelab.git"
+✔ cloned repository
+► generating component manifests
+✔ generated component manifests
+✔ committed component manifests to "main" ("c318b6d1b72f70e2bd078109304d0b27dba691f8")
+► pushing component manifests to "https://github.com/blurer/homelab.git"
+► installing components in "flux-system" namespace
+✔ installed components
+✔ reconciled components
+► determining if source secret "flux-system/flux-system" exists
+► generating source secret
+✔ public key: ecdsa-sha2-nistp384 AAAAE2VjZHNhLXNoYTItbmlzdHAzODQAAAAIbmlzdHAzODQAAABhBKafcbxbdNyHlkdNvNjtdJFTWor9wLJMI3LpNC0zqC3DiTlu/jwVjzScGWT42AdW7R3MxHkoPrPMPGwxJ2KO8tMqRpBojdF3nab3/pfZyR/qFvsEfTYZzBFbxJMttDkkTg==
+✔ configured deploy key "flux-system-main-flux-system-./clusters/staging" for "https://github.com/blurer/homelab"
+► applying source secret "flux-system/flux-system"
+✔ reconciled source secret
+► generating sync manifests
+✔ generated sync manifests
+✔ committed sync manifests to "main" ("e6699cefd3cd13b5d8fd2ebbb4149b27fc0286c5")
+► pushing sync manifests to "https://github.com/blurer/homelab.git"
+► applying sync manifests
+✔ reconciled sync configuration
+◎ waiting for GitRepository "flux-system/flux-system" to be reconciled
+✔ GitRepository reconciled successfully
+◎ waiting for Kustomization "flux-system/flux-system" to be reconciled
+✔ Kustomization reconciled successfully
+► confirming components are healthy
+✔ helm-controller: deployment ready
+✔ kustomize-controller: deployment ready
+✔ notification-controller: deployment ready
+✔ source-controller: deployment ready
+✔ all components are healthy
+```
+
+
