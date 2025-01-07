@@ -7,16 +7,33 @@ Flux for gitops
 - WIP
 
 ## To do
-- Linkding
-- Cloudflare DDNS
-- Reverse proxy
-- Dashboard (homepage)
-- Mealie (recipes)
-- Postgres
-- Grafana
-- Uptime Kuma
-- Smokeping
-- Wiki
+
+| Name               | Type                      |
+|--------------------|---------------------------|
+| DNS                | Pihole/Adguard            |
+| n8n                | Automation                |
+| Postgres           | Database                  |
+| Grafana            | Dashboard                 |
+| Nocodb             | Smartsheet                |
+| Linkding           | Bookmark + Archive        |
+| Homepage / Dashy   | Homepage                  |
+| ?                  | Internal DNS              |
+| ?                  | Reverse Proxy             |
+| Excalidraw         | Diagram+Drawing           |
+| Vikunja            | Project Management        |
+| Glance / Commafeed | Feed Dashboard            |
+| Medama             | Site Analytics            |
+| Beszel             | Server Monitor            |
+| Wireguard          | VPN                       |
+| Uptime Kuma        | Services Monitoring       |
+| Olive Tin          | Predefined Shell Commands |
+| Semaphore          | Ansible Web               |
+| Open Resume        | Resume Builder            |
+| Open Speedtest     | Speedtest                 |
+| Mealie             | Recipes                   |
+| Actual             | Budgeting                 |
+| DDNS               | Tunnel / DDNS             |
+| Cloud Resume       | Cloud Resume              |
 
 # Base Install
 - Bare metal install Ubuntu server, only install SSH, reboot
