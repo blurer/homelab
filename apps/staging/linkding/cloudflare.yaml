@@ -68,7 +68,7 @@ data:
   config.yaml: |
     # Name of the tunnel you want to run
     
-    tunnel: k3s-master
+    tunnel: k3s-linkding
 
     credentials-file: /etc/cloudflared/creds/credentials.json
 
