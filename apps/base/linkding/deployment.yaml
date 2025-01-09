@@ -12,20 +12,27 @@ spec:
       labels:
         app: linkding
     spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - linkding
+            topologyKey: kubernetes.io/hostname
       securityContext:
         fsGroup: 33
         runAsUser: 33
         runAsGroup: 33
-
       containers:
         - name: linkding
           image: sissbruecker/linkding:1.31.0
           ports:
             - containerPort: 9090
-
           securityContext:
             allowPrivilegeEscalation: false
-
           volumeMounts:
             - name: linkding-data
               mountPath: /etc/linkding/data
