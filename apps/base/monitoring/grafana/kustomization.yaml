@@ -4,5 +4,4 @@ namespace: monitoring
 resources:
   - namespace.yaml
   - release.yaml
-  - helm-repository.yaml
   
