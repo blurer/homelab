@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloudflared-grafana
+  namespace: monitoring
+spec:
+  selector:
+    matchLabels:
+      app: cloudflared-grafana
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: cloudflared-grafana
+    spec:
+      containers:
+      - name: cloudflared-grafana
+        image: cloudflare/cloudflared:latest
+        args:
+        - tunnel
+        - --config
+        - /etc/cloudflared/config/config.yaml
+        - run
+        livenessProbe:
+          httpGet:
+            path: /ready
+            port: 2000
+          failureThreshold: 1
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        volumeMounts:
+        - name: config
+          mountPath: /etc/cloudflared/config
+          readOnly: true
+        - name: creds
+          mountPath: /etc/cloudflared/creds
+          readOnly: true
+      volumes:
+      - name: creds
+        secret:
+          secretName: tunnel-credentials-grafana
+      - name: config
+        configMap:
+          name: cloudflared-grafana
+          items:
+          - key: config.yaml
+            path: config.yaml
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cloudflared-grafana
+  namespace: monitoring
+data:
+  config.yaml: |
+    tunnel: k3s-grafana
+    credentials-file: /etc/cloudflared/creds/credentials.json
+    metrics: 0.0.0.0:2000
+    no-autoupdate: true
+
+    ingress:
+    - hostname: grafana.blurer.net
+      service: http://grafana:3000
+    - service: http_status:404
