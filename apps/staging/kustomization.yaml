@@ -3,4 +3,3 @@ kind: Kustomization
 resources:
   - linkding
   - monitoring 
-  - grafana-helm-repo.yaml
