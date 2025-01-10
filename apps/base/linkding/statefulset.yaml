@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: linkding
+spec:
+  serviceName: linkding  # Important: Define a headless service for StatefulSet
+  replicas: 2 
+  selector:
+    matchLabels:
+      app: linkding
+  template:
+    metadata:
+      labels:
+        app: linkding
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - linkding
+            topologyKey: kubernetes.io/hostname
+      securityContext:
+        fsGroup: 33
+        runAsUser: 33
+        runAsGroup: 33
+        allowPrivilegeEscalation: false
+      containers:
+      - name: linkding
+        image: sissbruecker/linkding:1.31.0
+        ports:
+        - containerPort: 9090
+        securityContext:
+          allowPrivilegeEscalation: false
+        volumeMounts:
+        - name: linkding-data
+          mountPath: /etc/linkding/data
+  volumeClaimTemplates:
+  - metadata:
+      name: linkding-data  # This name should match the volumeMount in your container
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 2Gi
