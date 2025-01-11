@@ -23,4 +23,5 @@ spec:
       hosts:
         - host: grafana.blurer.net
           paths:
-            - /
+            - path: /
+              pathType: ImplementationSpecific
