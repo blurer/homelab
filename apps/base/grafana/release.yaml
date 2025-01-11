@@ -16,12 +16,11 @@ spec:
   values:
     persistence:
       enabled: true
-    ingress:
-      enabled: true
-      annotations:
-        kubernetes.io/ingress.class: "cloudflare-tunnel"
-      hosts:
-        - host: grafana.blurer.net
-          paths:
-            - path: /
-              pathType: Prefix
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: "cloudflare-tunnel"
+    hosts:
+      - host: grafana.blurer.net
+        paths:
+          - /
