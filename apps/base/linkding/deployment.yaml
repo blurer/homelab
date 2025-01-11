@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: linkding
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: linkding
@@ -12,28 +12,26 @@ spec:
       labels:
         app: linkding
     spec:
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchExpressions:
-              - key: app
-                operator: In
-                values:
-                - linkding
-            topologyKey: kubernetes.io/hostname
       securityContext:
-        fsGroup: 33
-        runAsUser: 33
-        runAsGroup: 33
-        allowPrivilegeEscalation: false
+        fsGroup: 33 # www-data group ID
+        runAsUser: 33 # www-data user ID
+        runAsGroup: 33 # www-data group ID
+
       containers:
         - name: linkding
           image: sissbruecker/linkding:1.31.0
           ports:
             - containerPort: 9090
+
+          envFrom:
+            # - configMapRef:
+            #     name: linkding-configmap
+            - secretRef:
+                name: linkding-container-env
+
           securityContext:
             allowPrivilegeEscalation: false
+
           volumeMounts:
             - name: linkding-data
               mountPath: /etc/linkding/data
