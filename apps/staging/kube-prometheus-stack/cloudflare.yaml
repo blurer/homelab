@@ -1,33 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cloudflared-grafana
-  namespace: grafana
+  name: cloudflared-tunnel
+  namespace: monitoring
 spec:
   selector:
     matchLabels:
-      app: cloudflared-grafana
+      app: cloudflared-tunnel
   replicas: 2
   template:
     metadata:
       labels:
-        app: cloudflared-grafana
+        app: cloudflared-tunnel
     spec:
       containers:
-      - name: cloudflared-grafana
+      - name: cloudflared
         image: cloudflare/cloudflared:latest
         args:
         - tunnel
         - --config
         - /etc/cloudflared/config/config.yaml
         - run
-        livenessProbe:
-          httpGet:
-            path: /ready
-            port: 2000
-          failureThreshold: 1
-          initialDelaySeconds: 10
-          periodSeconds: 10
         volumeMounts:
         - name: config
           mountPath: /etc/cloudflared/config
@@ -41,7 +34,7 @@ spec:
           secretName: tunnel-credentials
       - name: config
         configMap:
-          name: cloudflared-grafana
+          name: cloudflared-config
           items:
           - key: config.yaml
             path: config.yaml
@@ -49,16 +42,15 @@ spec:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: cloudflared-grafana
-  namespace: grafana
+  name: cloudflared-config
+  namespace: monitoring
 data:
   config.yaml: |
-    tunnel: k3s-grafana
+    tunnel: <your-tunnel-id>
     credentials-file: /etc/cloudflared/creds/credentials.json
-    metrics: 0.0.0.0:2000
-    no-autoupdate: true
-
     ingress:
-    - hostname: grafana.blurer.net
-      service: http://grafana:3000
-    - service: http_status:404
+      - hostname: grafana.blurer.net
+        service: http://grafana:3000
+      - hostname: prometheus.blurer.net
+        service: http://prometheus:9090
+      - service: http_status:404
