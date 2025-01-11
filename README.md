@@ -1,39 +1,24 @@
 # Homelab with K3s
 
-Using Ubuntu 22.04 bare metal
+Using Arch Linux minimal + k3s
 Flux for gitops
 
 ## Hosted apps
-- WIP
+
+| Name               | Type                      |
+|--------------------|---------------------------|
+| Linkding           | Bookmark Manager          |
+| Grafana            | Dashboard                 |
 
 ## To do
 
 | Name               | Type                      |
 |--------------------|---------------------------|
-| DNS                | Pihole/Adguard            |
-| n8n                | Automation                |
+| Mealie             | Recipe Manager            |
+| Vikunja            | Kanban+Project Management |
 | Postgres           | Database                  |
-| Grafana            | Dashboard                 |
-| Nocodb             | Smartsheet                |
-| Linkding           | Bookmark + Archive        |
-| Homepage / Dashy   | Homepage                  |
-| ?                  | Internal DNS              |
-| ?                  | Reverse Proxy             |
-| Excalidraw         | Diagram+Drawing           |
-| Vikunja            | Project Management        |
-| Glance / Commafeed | Feed Dashboard            |
-| Medama             | Site Analytics            |
-| Beszel             | Server Monitor            |
-| Wireguard          | VPN                       |
-| Uptime Kuma        | Services Monitoring       |
-| Olive Tin          | Predefined Shell Commands |
-| Semaphore          | Ansible Web               |
-| Open Resume        | Resume Builder            |
-| Open Speedtest     | Speedtest                 |
-| Mealie             | Recipes                   |
-| Actual             | Budgeting                 |
-| DDNS               | Tunnel / DDNS             |
-| Cloud Resume       | Cloud Resume              |
+| 
+
 
 # Base Install
 - Bare metal install Ubuntu server, only install SSH, reboot
