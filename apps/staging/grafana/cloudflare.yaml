@@ -38,7 +38,7 @@ spec:
       volumes:
       - name: creds
         secret:
-          secretName: tunnel-credentials-grafana
+          secretName: tunnel-credentials
       - name: config
         configMap:
           name: cloudflared-grafana
